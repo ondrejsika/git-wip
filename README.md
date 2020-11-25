@@ -29,4 +29,5 @@ sudo mv git-wip /usr/local/bin/git-wip
 
 ## Changlog
 
+- `v1.1.0` - Use new `git add` to respect a `.gitignore` functionality
 - `v1.0.0` - First minimal working version

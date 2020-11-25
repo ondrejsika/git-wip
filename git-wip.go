@@ -16,6 +16,7 @@ import (
 	"strconv"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
 )
 
 type stateStruct map[string]int
@@ -46,7 +47,13 @@ func main() {
 	// Commit all changes
 	r, _ := git.PlainOpen(".")
 	w, _ := r.Worktree()
-	w.Add(".")
+
+	ps, _ := gitignore.ReadPatterns(w.Filesystem, []string{})
+	w.Excludes = ps
+	w.AddWithOptions(&git.AddOptions{
+		All: true,
+	})
+
 	commit, _ := w.Commit("WIP "+strconv.Itoa(state[repoPath])+"\n\nCommited by https://github.com/ondrejsika/git-wip", &git.CommitOptions{})
 	obj, _ := r.CommitObject(commit)
 	fmt.Println(obj)
